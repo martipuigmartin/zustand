@@ -8,7 +8,7 @@ import {lowerNumberOption} from "./utils/helpers.js";
 
 export const App = () => {
     const {optionList, selectedCountry, selectedOption} = CountryStore.getState();
-    const countryList = CountryStore((state) => {
+    const countryList = CountryStore(state => {
         return {
             countries: state.countryList.OptionA,
             options: state.countryList.OptionB,
@@ -25,7 +25,7 @@ export const App = () => {
     const handleOnClick = (country, list) => {
         setSelectedOption(null);
         setSelectedCountry(country);
-        setOptionList(list.filter((item) => item.country !== country.country));
+        setOptionList(list.filter(item => item.country !== country.country));
     };
 
     useEffect(() => {
@@ -39,8 +39,8 @@ export const App = () => {
                     <List
                         title={"Country List"}
                         list={countryList.countries}
-                        onSelect={(country) => handleOnClick(country, countryList.options)}
-                        renderItem={(item) => item.country}
+                        onSelect={country => handleOnClick(country, countryList.options)}
+                        renderItem={item => item.country}
                     />
                 ) : null}
             </div>
@@ -50,8 +50,8 @@ export const App = () => {
                         <List
                             title={"Option List"}
                             list={optionList}
-                            onSelect={(option) => setSelectedOption(option)}
-                            renderItem={(item) => item.country}
+                            onSelect={option => setSelectedOption(option)}
+                            renderItem={item => item.country}
                         />
                     ) : null}
                     <Price
