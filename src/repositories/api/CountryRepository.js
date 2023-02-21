@@ -1,5 +1,5 @@
-import Repository from '../BaseRepository';
+import Repository from '../BaseRepository'
 
 export default {
-    list: () => Repository.get(''),
-};
+  list: () => Repository.get(''),
+}
