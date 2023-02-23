@@ -1,4 +1,6 @@
 # zustand
 
-- npm install
-- npm run dev
+## First Steps
+
+1. npm install
+2. npm run dev
