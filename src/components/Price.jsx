@@ -5,7 +5,7 @@ export const Price = ({title, selectedCountry, selectedOption, optionsList, lowe
     <p>
       Option B: {selectedOption
         ? `${selectedOption.price} ${selectedOption.country}`
-        : `${lowerNumberOption(optionsList).price} ${lowerNumberOption(optionsList).country}`}
+        : `${lowerNumberOption(optionsList, 'price').price} ${lowerNumberOption(optionsList, 'price').country}`}
     </p>
   </>
 )
