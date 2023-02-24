@@ -1,22 +1,15 @@
-import {useEffect} from 'react'
-
 import {List} from './components/List.jsx'
 import {Price} from './components/Price.jsx'
 
+import {useCountryList} from './repositories/api/CountryRepository.js'
 import {CountryStore} from './store/CountryStore.js'
+
 import {lowerNumberOption} from './utils/helpers.js'
 
 export const App = () => {
+  const {data, isLoading, error} = useCountryList()
   const {optionList, selectedCountry, selectedOption} = CountryStore.getState()
-  const countryList = CountryStore(state => {
-    return {
-      countries: state.countryList.OptionA,
-      options: state.countryList.OptionB,
-    }
-  })
-
-  const {setCountryList, setOptionList, setSelectedCountry, setSelectedOption} = CountryStore(state => ({
-    setCountryList: state.setCountryList,
+  const {setOptionList, setSelectedCountry, setSelectedOption} = CountryStore(state => ({
     setOptionList: state.setOptionList,
     setSelectedCountry: state.setSelectedCountry,
     setSelectedOption: state.setSelectedOption,
@@ -28,41 +21,39 @@ export const App = () => {
     setOptionList(list.filter(item => item.country !== country.country))
   }
 
-  useEffect(() => {
-    setCountryList()
-  }, [])
-
   return (
     <>
-      <div>
-        {countryList.countries ? (
-          <List
-            title={'Country List'}
-            list={countryList.countries}
-            onSelect={country => handleOnClick(country, countryList.options)}
-            renderItem={item => item.country}
-          />
-        ) : null}
-      </div>
-      {selectedCountry ? (
+      {isLoading && <div>Loading...</div>}
+      {error && <div>Error: {error.message}</div>}
+      {data && (
         <div>
-          {optionList ? (
+          {data.OptionA && (
             <List
-              title={'Option List'}
-              list={optionList}
-              onSelect={option => setSelectedOption(option)}
+              title={'Country List'}
+              list={data.OptionA}
+              onSelect={country => handleOnClick(country, data.OptionB)}
               renderItem={item => item.country}
             />
-          ) : null}
-          <Price
-            title="Price"
-            selectedCountry={selectedCountry}
-            selectedOption={selectedOption}
-            optionsList={optionList}
-            lowerNumberOption={lowerNumberOption}
-          />
+          )}
+          {selectedCountry && optionList && (
+            <div>
+              <List
+                title={'Option List'}
+                list={optionList}
+                onSelect={option => setSelectedOption(option)}
+                renderItem={item => item.country}
+              />
+              <Price
+                title={'Price'}
+                selectedCountry={selectedCountry}
+                selectedOption={selectedOption}
+                optionsList={optionList}
+                lowerNumberOption={lowerNumberOption}
+              />
+            </div>
+          )}
         </div>
-      ) : null}
+      )}
     </>
   )
 }
